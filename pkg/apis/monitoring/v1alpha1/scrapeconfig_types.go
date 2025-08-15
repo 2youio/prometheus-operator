@@ -56,6 +56,15 @@ type AttachMetadata struct {
 	//
 	// +optional
 	Node *bool `json:"node,omitempty"`
+
+	// Attaches namespace metadata to discovered targets.
+	// When set to true, Prometheus must have permissions to list/watch Namespaces.
+	// Only valid for pod, endpoints, endpointslice, service, ingress.
+	//
+	// It requires Prometheus >= v3.6.0.
+	//
+	// +optional
+	Namespace *bool `json:"namespace,omitempty"`
 }
 
 // Filter name and value pairs to limit the discovery process to a subset of available resources.
@@ -463,10 +472,11 @@ type KubernetesSDConfig struct {
 	// +optional
 	Namespaces *NamespaceDiscovery `json:"namespaces,omitempty"`
 	// attachMetadata defines the metadata to attach to discovered targets.
-	// It requires Prometheus >= v2.35.0 when using the `Pod` role and
-	// Prometheus >= v2.37.0 for `Endpoints` and `Endpointslice` roles.
+	// It requires Prometheus >= v2.35.0 when using the `Pod` role,
+	// Prometheus >= v2.37.0 for `Endpoints` and `Endpointslice` roles and
+	// Prometheus >= v3.6.0 for `Service` and `Ingress` roles.
 	// +optional
-	AttachMetadata *AttachMetadata `json:"attachMetadata,omitempty"`
+	AttachMetadata *v1.AttachMetadata `json:"attachMetadata,omitempty"`
 	// selectors defines the selector to select objects.
 	// It requires Prometheus >= v2.17.0
 	// +optional
